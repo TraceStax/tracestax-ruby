@@ -18,7 +18,7 @@ Then run:
 bundle install
 ```
 
-## Quickstart — Sidekiq
+## Quickstart - Sidekiq
 
 ```ruby
 # config/initializers/tracestax.rb
@@ -29,9 +29,9 @@ end
 TraceStax::Sidekiq.configure
 ```
 
-The SDK installs a server middleware that automatically instruments all Sidekiq jobs — no changes to individual workers needed.
+The SDK installs a server middleware that automatically instruments all Sidekiq jobs - no changes to individual workers needed.
 
-## Quickstart — Solid Queue (Rails 8)
+## Quickstart - Solid Queue (Rails 8)
 
 ```ruby
 # config/initializers/tracestax.rb
@@ -42,7 +42,7 @@ end
 TraceStax::SolidQueueSubscriber.attach
 ```
 
-## Quickstart — Resque
+## Quickstart - Resque
 
 ```ruby
 TraceStax.configure do |config|
@@ -52,7 +52,7 @@ end
 require "tracestax/resque"
 ```
 
-## Quickstart — Delayed::Job
+## Quickstart - Delayed::Job
 
 ```ruby
 TraceStax.configure do |config|
@@ -62,7 +62,7 @@ end
 require "tracestax/delayed_job"
 ```
 
-## Quickstart — Good Job
+## Quickstart - Good Job
 
 ```ruby
 TraceStax.configure do |config|
