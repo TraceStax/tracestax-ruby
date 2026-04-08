@@ -1,0 +1,15 @@
+FROM ruby:3.3-slim
+
+WORKDIR /sdk
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY tracestax.gemspec .
+COPY lib/ lib/
+COPY tests/ tests/
+
+RUN gem install minitest sidekiq redis faraday webmock
+
+CMD ["sh", "-c", "ruby -Ilib -Itest tests/test_client.rb && ruby -Ilib -Itest tests/test_frameworks.rb"]
