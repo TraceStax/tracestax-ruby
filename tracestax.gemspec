@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://tracestax.com"
   spec.license       = "MIT"
 
-  spec.required_ruby_version = ">= 3.1.0"
+  spec.required_ruby_version = ">= 3.2.0"
 
   spec.add_dependency "faraday", ">= 2.0"
 
@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
   #   require "tracestax/resque"       # for Resque
   #   require "tracestax/delayed_job"  # for Delayed::Job
   #   require "tracestax/good_job"     # for Good Job
-  spec.add_development_dependency "sidekiq", "~> 7.0"
+  spec.add_development_dependency "sidekiq", "~> 8.0"
   spec.add_development_dependency "solid_queue", ">= 0.3"
   spec.add_development_dependency "resque", ">= 2.0"
   spec.add_development_dependency "delayed_job", ">= 4.1"
