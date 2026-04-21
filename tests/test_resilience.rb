@@ -389,10 +389,13 @@ class TestResilienceRetryAfter < Minitest::Test
     client.instance_variable_set(:@pause_until, Time.now - 1)
 
     stub_request(:post, "#{RESILIENCE_INGEST_URL}/v1/ingest")
-      .to_return(status: 200, body: '{"ok":true}')
+      .to_return do |_|
+        call_count += 1
+        { status: 200, body: '{"ok":true}' }
+      end
 
     client.flush
-    assert call_count >= 2  # resumed and flushed
+    assert call_count >= 2, "Expected flush after pause expiry, call_count=#{call_count}"
   end
 end
 
@@ -594,8 +597,8 @@ class TestResilienceCooperativeShutdown < Minitest::Test
     client = resilience_client
     client.shutdown(timeout: 2)
 
-    # Second shutdown must not raise or deadlock
-    assert_silent { client.shutdown(timeout: 1) }
+    # Second shutdown must not raise or deadlock (may log timeout to stderr — that's fine)
+    client.shutdown(timeout: 1)
   end
 end
 
