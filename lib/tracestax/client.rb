@@ -220,6 +220,11 @@ module TraceStax
         req.body = { events: batch }.to_json
       end
 
+      if resp.headers["X-Retry-After"]
+        secs = resp.headers["X-Retry-After"].to_f
+        set_pause_until((Time.now.to_f + secs) * 1000) if secs > 0
+      end
+
       if resp.status == 401
         # Auth failure is permanent misconfiguration, not a transient network issue.
         # Log prominently without penalising the circuit breaker — a bad API key

@@ -612,6 +612,8 @@ class TestLargePayloadGuard < Minitest::Test
       c.dry_run  = false
       c.endpoint = "https://ingest.tracestax.test"
     end
+    q = TraceStax::Client.instance.instance_variable_get(:@queue)
+    q.size.times { q.pop(true) rescue nil }
   end
 
   def test_oversized_payload_dropped_without_raising
