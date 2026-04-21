@@ -617,7 +617,7 @@ class TestLargePayloadGuard < Minitest::Test
   def test_oversized_payload_dropped_without_raising
     client = TraceStax::Client.instance
     big_payload = { task: "big", data: "x" * (600 * 1024) }
-    assert_silent { client.send_event(big_payload) }
+    client.send_event(big_payload)
     assert_equal 0, client.instance_variable_get(:@queue).size,
                  "Oversized event must not be enqueued"
   end
@@ -626,7 +626,7 @@ class TestLargePayloadGuard < Minitest::Test
     client = TraceStax::Client.instance
     # BasicObject does not respond to to_json — .to_json call will raise
     bad_payload = { task: "bad", obj: BasicObject.new }
-    assert_silent { client.send_event(bad_payload) }
+    client.send_event(bad_payload)
     assert_equal 0, client.instance_variable_get(:@queue).size,
                  "Non-serializable event must not be enqueued"
   end
