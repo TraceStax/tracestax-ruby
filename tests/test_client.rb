@@ -137,14 +137,16 @@ class TestTraceStaxClientIntegration < Minitest::Test
       worker:    { key: "host:1234", hostname: "host", pid: 1234, queues: ["default"] },
       timestamp: Time.now.utc.iso8601,
     })
+    # send_event batches via /v1/ingest, so check the events store (not /test/heartbeats
+    # which is populated only by direct /v1/heartbeat calls).
     deadline = Time.now + 10
-    heartbeats = []
+    events = []
     loop do
-      heartbeats = fetch_ingest_heartbeats
-      break if heartbeats.any? { |e| e["type"] == "heartbeat" }
+      events = fetch_ingest_events
+      break if events.any? { |e| e["type"] == "heartbeat" }
       break if Time.now > deadline
       sleep 0.25
     end
-    assert heartbeats.any? { |e| e["type"] == "heartbeat" }, "Expected a heartbeat event, got: #{heartbeats.inspect}"
+    assert events.any? { |e| e["type"] == "heartbeat" }, "Expected a heartbeat event, got: #{events.inspect}"
   end
 end
