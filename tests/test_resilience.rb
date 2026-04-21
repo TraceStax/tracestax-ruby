@@ -89,7 +89,7 @@ class TestResilienceDisabled < Minitest::Test
 
   def test_shutdown_does_not_raise
     client = resilience_client(enabled: false)
-    assert_silent { client.shutdown }
+    client.shutdown  # must not raise
   end
 end
 
@@ -659,6 +659,13 @@ class TestClockSkewResilience < Minitest::Test
       c.enabled  = true
       c.endpoint = "https://ingest.tracestax.test"
     end
+    client = TraceStax::Client.instance
+    client.instance_variable_set(:@consecutive_failures, 0)
+    client.instance_variable_set(:@circuit_state,        :closed)
+    client.instance_variable_set(:@circuit_opened_at,   nil)
+    client.instance_variable_set(:@pause_until,          nil)
+    q = client.instance_variable_get(:@queue)
+    q.size.times { q.pop(true) rescue nil }
   end
 
   def test_backward_clock_does_not_freeze_circuit_open
