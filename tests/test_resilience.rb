@@ -602,7 +602,6 @@ end
 # ── Large payload size guard (2B) ─────────────────────────────────────────────
 
 class TestLargePayloadGuard < Minitest::Test
-  include ResilienceHelpers
 
   def setup
     super
@@ -644,7 +643,6 @@ end
 # ── Circuit breaker clock skew (2D) ──────────────────────────────────────────
 
 class TestClockSkewResilience < Minitest::Test
-  include ResilienceHelpers
 
   def setup
     super
